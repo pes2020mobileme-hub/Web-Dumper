@@ -11,14 +11,14 @@ A Python script to download a single web page, including its HTML, CSS, JavaScri
 
 ## Requirements 📋
 
-- Python 3.x
+- Python 3.10 or newer (CI covers 3.10 – 3.13)
 - `requests` library
 - `beautifulsoup4` library
 
 Install the required libraries using pip:
 
 ```bash
-pip install requests beautifulsoup4
+pip install -r requirements.txt
 ```
 
 ## How to Use 🚀
@@ -32,9 +32,19 @@ pip install requests beautifulsoup4
 
 2. **Run the script**:
 
+    On Windows, double-click `run.bat` — it locates Python for you (`py -3`, falling back to `python`) and starts the script:
+
+    ```bat
+    run.bat
+    ```
+
+    Anywhere else, or if you already have a Python environment set up:
+
     ```bash
     python WebDumper.py
     ```
+
+    `run.bat` always runs the script from its own folder, so the download folder is created next to it.
 
 3. **Enter the URL** when prompted. `https://` is added automatically if you leave it out, and `localhost` / `127.0.0.1` default to `http://`. The page is saved to a folder named after the website's hostname.
 
