@@ -1,11 +1,12 @@
 # Web Dumper 🌐📥
 
-A Python script to download an entire website, including HTML, CSS, JavaScript, and images. This tool is useful for archiving web pages or for offline browsing.
+A Python script to download a single web page, including its HTML, CSS, JavaScript, and images, and save it for offline browsing.
 
 ## Features ✨
 
-- Download HTML, CSS, JavaScript, and image files from a specified website.
-- Save the website structure locally, preserving relative links to assets.
+- Download the HTML, CSS, JavaScript, and image files referenced by one page.
+- Mirror the site's directory structure locally, so assets with the same file name never collide.
+- Skip assets that cannot be fetched (missing, blocked, inline `data:` URIs) and report each one on stderr instead of aborting the run.
 - Display a simple animated message during the download process.
 
 ## Requirements 📋
@@ -35,7 +36,7 @@ pip install requests beautifulsoup4
     python WebDumper.py
     ```
 
-3. **Enter the URL of the website** when prompted. The script will download the website and save it to a folder named after the website's hostname.
+3. **Enter the URL** when prompted. `https://` is added automatically if you leave it out, and `localhost` / `127.0.0.1` default to `http://`. The page is saved to a folder named after the website's hostname.
 
 ## Example 🖥️
 
@@ -43,15 +44,16 @@ pip install requests beautifulsoup4
 Enter the URL of the website to download: https://example.com
 ```
 
-The website will be downloaded into a folder named `example.com_download`.
+The page is downloaded into a folder named `example.com_download`.
 
 ## How It Works 🔍
 
 - The script first creates a local directory to store the downloaded files.
 - It downloads the main HTML file and saves it as `index.html`.
-- It parses the HTML to find links to CSS, JavaScript, and image files.
-- Each asset is downloaded and saved in the same directory.
-- The script updates the HTML file to use local paths for the downloaded assets.
+- It parses the HTML to find stylesheets (`<link rel="stylesheet">`), scripts (`<script src>`), and images (`<img src>`).
+- Each asset keeps its original directory structure inside the output folder, so `/css/app.css` becomes `css/app.css` and two files named `logo.png` in different folders do not overwrite each other.
+- Each asset is downloaded with a timeout; assets that fail or use an unsupported URL are reported on stderr and left pointing at their original remote URL.
+- The script updates the HTML file to use local paths for the assets it downloaded.
 - An animated "Downloading..." message is displayed during the process.
 
 ## Notes 📝
